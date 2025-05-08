@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+## 🧪 Dev Setup
+
+- Use the `pg` package to connect to Supabase with credentials loaded from a `.env` file.
+- Use the MCP TypeScript SDK and define the tool using `zod` for parameter validation.
+- The server should be executable with `npm start` using `ts-node`.
+- The tool name should be `search_plots` and exposed as an MCP-compliant endpoint via `stdio`.

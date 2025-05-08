@@ -1,0 +1,30 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+## 🧠 Prompt
+
+Build an MCP-compliant TypeScript server using `@modelcontextprotocol/sdk`.
+
+Create a tool called `search_plots` that accepts the following parameters:
+
+- `max_price_eur`, `min_size_m2`
+- Booleans: `near_coastline`, `near_beach`, `near_airport`, `near_main_town`, `near_public_transport`, `near_supermarket`, `near_convenience_store`, `near_restaurant_or_fastfood`, `near_cafe`
+
+Each boolean should map to a filter that checks whether `enrichment_data.<key>.distance` is present (i.e., not null or undefined).
+
+If the parameter is not present, it should not affect the query.
+
+Use a dynamic SQL query against the `plots` table in Supabase to return up to 20 matches. The results should include the fields above.
+
+Use `.env` for DB credentials, and ensure the project can be run with `npm start`.
+
+## ✅ Done
+
+Once complete, the MCP server will allow agents like Claude to search for plots with statements like:
+
+- “Find me plots under €50,000 with a nearby supermarket and cafe”
+- “Show plots that are near the coastline and have public transport access”
+
+This enables rich, natural language search over geospatial data.
