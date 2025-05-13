@@ -1,6 +1,6 @@
 # Yonder Plot Search MCP Server
 
-MCP Server for searching land plots with enriched location data, enabling Claude to find properties based on natural language queries about price, size, and nearby amenities.
+MCP Server for searching land plots and prefab homes, enabling Claude to find properties based on natural language queries about price, size, and nearby amenities.
 
 ## Tools
 
@@ -19,7 +19,16 @@ MCP Server for searching land plots with enriched location data, enabling Claude
      - `near_convenience_store`: Plot is near a convenience store
      - `near_restaurant_or_fastfood`: Plot is near dining options
      - `near_cafe`: Plot is near a cafe
-   - Returns: Up to 20 matching plots with their details, enrichment data, and listing URLs (format: https://liveyonder.co/version-test/listing/{bubble_id})
+   - Returns: Up to 20 matching plots with their details, enrichment data, and listing URLs
+
+2. `list_prefab_homes`
+   - Search for prefab homes based on price and size
+   - Optional numeric inputs:
+     - `max_price_eur` (number): Maximum price in euros
+     - `min_size_m2` (number): Minimum home size in square meters
+   - Optional filters:
+     - `category` (string): Filter by home category
+   - Returns: List of matching prefab homes with details, images, and floor plans
 
 ## Example Queries
 
@@ -27,137 +36,82 @@ The MCP server enables natural language search through queries like:
 - "Find me plots under €50,000 with a nearby supermarket and cafe"
 - "Show plots that are near the coastline and have public transport access"
 - "Search for plots over 1000m² near airports"
+- "Show me prefab homes under €100,000 with at least 80m²"
 
-## Setup
+## Setup and Usage with Claude Desktop
 
-1. Clone the repository and install dependencies:
+Open Terminal (Mac) or Command Prompt (Windows) and run these commands:
+
+1. Install Node.js globally:
    ```bash
-   git clone <repository-url>
+   # Mac (using Homebrew)
+   brew install node
+
+   # Windows (using winget)
+   winget install OpenJS.NodeJS.LTS
+   ```
+
+2. Set up the project:
+   ```bash
+   # Clone and build
+   git clone https://github.com/your-repo/yonder-mcp-server
    cd yonder-mcp-server
    npm install
+   npm run build
+
+   # Create .env file
+   echo "SUPABASE_URL=your_supabase_url
+   SUPABASE_SERVICE_KEY=your_supabase_service_key
+   BUBBLE_API_TOKEN=your_bubble_api_token
+   BUBBLE_HOMES_URL=your_bubble_homes_url" > .env
+
+   # Get your project path
+   pwd  # On Mac
+   cd   # On Windows
    ```
 
-2. Set up your Supabase environment:
-   - Create a `.env` file with your Supabase credentials:
+3. Set up Claude Desktop:
+   - Open Claude Desktop
+   - Click Claude menu → Settings → Developer → Edit Config
+   - This opens:
+     - Mac: `~/Library/Application Support/Claude/claude_desktop_config.json`
+     - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+   - Add this configuration (replace FULL_PATH_TO_PROJECT with path from previous step):
+     ```json
+     {
+       "mcpServers": {
+         "yonder_plots": {
+           "command": "node",
+           "args": ["FULL_PATH_TO_PROJECT/dist/index.js"],
+           "cwd": "FULL_PATH_TO_PROJECT",
+           "env": {
+             "SUPABASE_URL": "your_supabase_url",
+             "SUPABASE_SERVICE_KEY": "your_supabase_service_key",
+             "BUBBLE_API_TOKEN": "your_bubble_api_token",
+             "BUBBLE_HOMES_URL": "your_bubble_homes_url"
+           }
+         }
+       }
+     }
      ```
-     SUPABASE_URL=your_supabase_project_url
-     SUPABASE_SERVICE_KEY=your_supabase_service_role_key
-     ```
-
-3. Start the server:
-   ```bash
-   npm start
-   ```
-
-### Database Schema
-
-The server expects a Supabase database with a `plots` table containing:
-- `id`: UUID primary key
-- `bubble_id`: Client-facing identifier
-- `latitude`: Latitude coordinate
-- `longitude`: Longitude coordinate
-- `price`: Plot price in EUR
-- `size`: Plot size in square meters
-- `enrichment_data`: JSONB column containing nearby feature data
-
-The `enrichment_data` structure for each plot:
-```json
-{
-  "cafe": {
-    "distance": number,
-    "nearest_point": {
-      "lat": number,
-      "lon": number,
-      "name": string
-    }
-  },
-  "coastline": {
-    "distance": number,
-    "nearest_point": {
-      "lat": number,
-      "lon": number
-    }
-  },
-  // ... similar structure for other features
-}
-```
-
-### Usage with Claude Desktop
-
-Add the following to your `claude_desktop_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "yonder_plots": {
-      "command": "node",
-      "args": ["/Users/setondji.mn/Documents/Code/minimum/yonder-mcp-server/dist/index.js"],
-      "cwd": "/Users/setondji.mn/Documents/Code/minimum/yonder-mcp-server",
-      "env": {
-        "SUPABASE_URL": "your_supabase_url",
-        "SUPABASE_SERVICE_KEY": "your_supabase_service_role_key"
-      }
-    }
-  }
-}
-```
-
-### Usage with VS Code
-
-For manual installation, add the following to your VS Code settings:
-
-```json
-{
-  "mcp": {
-    "inputs": [
-      {
-        "type": "promptString",
-        "id": "supabase_url",
-        "description": "Supabase Project URL",
-        "password": false
-      },
-      {
-        "type": "promptString",
-        "id": "supabase_key",
-        "description": "Supabase Service Role Key",
-        "password": true
-      }
-    ],
-    "servers": {
-      "yonder_plots": {
-        "command": "npm",
-        "args": ["start"],
-        "cwd": "${workspaceFolder}",
-        "env": {
-          "SUPABASE_URL": "${input:supabase_url}",
-          "SUPABASE_SERVICE_KEY": "${input:supabase_key}"
-        }
-      }
-    }
-  }
-}
-```
-
-### Environment Variables
-
-1. `SUPABASE_URL`: Required. Your Supabase project URL
-2. `SUPABASE_SERVICE_KEY`: Required. Your Supabase service role key (not the anon key)
+   - Replace the credential values with your actual values from the .env file
+   - Save the file and restart Claude Desktop
+   - Look for the hammer icon 🔨 in bottom right
+   - Click hammer to verify "yonder_plots" is listed
 
 ### Troubleshooting
 
-If you encounter errors:
-1. Verify your Supabase credentials are correct
-2. Ensure the `plots` table exists with the correct schema
-3. Check that the service role key has the necessary permissions
-4. Verify the enrichment_data column contains properly structured JSON
+If server isn't working:
+1. Check logs:
+   ```bash
+   # Mac
+   tail -f ~/Library/Logs/Claude/mcp*.log
 
-## Development
-
-The server is built with:
-- TypeScript
-- @modelcontextprotocol/sdk for MCP implementation
-- @supabase/supabase-js for database access
-- Zod for parameter validation
+   # Windows
+   type "%APPDATA%\Claude\logs\mcp*.log"
+   ```
+2. Verify paths in claude_desktop_config.json are absolute and correct
+3. Make sure all credentials in .env match claude_desktop_config.json
 
 ## License
 
