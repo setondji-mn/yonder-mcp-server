@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "name": "Yonder Plot Search",
+  "description": "MCP Server for searching land plots with enriched location data, enabling natural language queries about price, size, and nearby amenities.",
+  "tools": [
+    {
+      "name": "search_plots",
+      "description": "Search for plots based on price, size, and nearby features. Returns up to 20 matching plots with their details, enrichment data, and listing URLs.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "max_price_eur": {
+            "type": "number",
+            "description": "Maximum price in euros"
+          },
+          "min_size_m2": {
+            "type": "number",
+            "description": "Minimum plot size in square meters"
+          },
+          "near_coastline": {
+            "type": "boolean",
+            "description": "Plot is near the coastline"
+          },
+          "near_beach": {
+            "type": "boolean",
+            "description": "Plot is near a beach"
+          },
+          "near_airport": {
+            "type": "boolean",
+            "description": "Plot is near an airport"
+          },
+          "near_main_town": {
+            "type": "boolean",
+            "description": "Plot is near a main town"
+          },
+          "near_public_transport": {
+            "type": "boolean",
+            "description": "Plot has public transport access"
+          },
+          "near_supermarket": {
+            "type": "boolean",
+            "description": "Plot is near a supermarket"
+          },
+          "near_convenience_store": {
+            "type": "boolean",
+            "description": "Plot is near a convenience store"
+          },
+          "near_restaurant_or_fastfood": {
+            "type": "boolean",
+            "description": "Plot is near dining options"
+          },
+          "near_cafe": {
+            "type": "boolean",
+            "description": "Plot is near a cafe"
+          }
+        }
+      },
+      "returns": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "UUID of the plot"
+            },
+            "bubble_id": {
+              "type": "string",
+              "description": "Client-facing identifier"
+            },
+            "latitude": {
+              "type": "number",
+              "description": "Latitude coordinate"
+            },
+            "longitude": {
+              "type": "number",
+              "description": "Longitude coordinate"
+            },
+            "price": {
+              "type": "number",
+              "description": "Plot price in EUR"
+            },
+            "size": {
+              "type": "number",
+              "description": "Plot size in square meters"
+            },
+            "listing_url": {
+              "type": "string",
+              "description": "URL to view the plot listing (format: https://liveyonder.co/version-test/listing/{bubble_id})"
+            },
+            "enrichment_data": {
+              "type": "object",
+              "description": "Data about nearby features and their distances"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "version": "1.0.0",
+  "contact": {
+    "name": "Yonder",
+    "url": "https://liveyonder.co"
+  }
+} 
