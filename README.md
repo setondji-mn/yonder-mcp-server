@@ -30,7 +30,7 @@ MCP Server for searching land plots and prefab homes, enabling Claude to find pr
      - `category` (string): Filter by home category
    - Returns: List of matching prefab homes with details, images, and floor plans
 
-## Example Queries
+### Example Queries
 
 The MCP server enables natural language search through queries like:
 - "Find me plots under €50,000 with a nearby supermarket and cafe"
@@ -54,7 +54,7 @@ Open Terminal (Mac) or Command Prompt (Windows) and run these commands:
 2. Set up the project:
    ```bash
    # Clone and build
-   git clone https://github.com/your-repo/yonder-mcp-server
+   git clone https://github.com/setondji-mn/yonder-mcp-server
    cd yonder-mcp-server
    npm install
    npm run build
