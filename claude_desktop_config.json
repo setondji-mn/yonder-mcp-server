@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "yonder_plots": {
+      "command": "node",
+      "args": ["/Users/setondji.mn/Documents/Code/minimum/yonder-mcp-server/dist/index.js"],
+      "cwd": "/Users/setondji.mn/Documents/Code/minimum/yonder-mcp-server",
+      "env": {
+        "SUPABASE_URL": "https://zlolgjfoqrdmaawalrny.supabase.co",
+        "SUPABASE_SERVICE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpsb2xnamZvcXJkbWFhd2Fscm55Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NjE5ODA5NiwiZXhwIjoyMDYxNzc0MDk2fQ.ItxJZmEtKh11I7yVsaqDPS0qJqRuMvJUhNzvSWLLre8",
+        "BUBBLE_API_TOKEN": "5b477d49ece74a32a3aca45bec2dd00d",
+        "BUBBLE_HOMES_URL": "https://liveyonder.co/version-test/api/1.1/obj/home"
+      }
+    }
+  }
+} 
