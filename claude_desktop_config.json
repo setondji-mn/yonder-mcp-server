@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+      "yonder_plots": {
+        "command": "node",
+        "args": ["/Users/...yonder-mcp-server/dist/index.js"],
+        "cwd": "/Users/.../yonder-mcp-server",
+        "env": {
+          "SUPABASE_URL": "",
+          "SUPABASE_SERVICE_KEY": "",
+          "BUBBLE_API_TOKEN": "",
+          "BUBBLE_HOMES_URL": ""
+        }
+      }
+    }
+  } 
